@@ -35,7 +35,9 @@ while True:
         print(page)
         break
     print("page=",page)
-    betlist.append(data['body'])
+    for i in range(0,len(data['body'])):
+
+        betlist.append(data['body'][i])
     page+=1
 
 #tournamentid
