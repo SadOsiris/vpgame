@@ -1,12 +1,15 @@
 import json
 from sets import Set
 
-def getList(str,mySet,str1,input="vpgame.txt"):
+def getList(mySet,str1,str2=None,input="vpgame.txt"):
     json_data=open(input).read()
     data=json.loads(json_data)
 
     for i in range(0,len(data)):
-        mySet.add(data[i][str1][str])
+        if(str2!=None):
+            mySet.add(data[i][str1][str2])
+        else:
+            mySet.add(data[i][str1])
         #mySet.add(data[i]['schedule']['right_team_name'])
 
 def writeSetToFile(str,mySet):
@@ -16,6 +19,10 @@ def writeSetToFile(str,mySet):
 
 
 mySet=Set([])
-getList('left_team_name',mySet,'schedule')
-getList('right_team_name',mySet,'schedule')
-writeSetToFile('setlist',mySet)
+#getList('left_team_name',mySet,'schedule')
+#getList('right_team_name',mySet,'schedule')
+str1='tournament_schedule_id'
+oFile=str1+'.txt'
+getList(mySet,str1)
+
+writeSetToFile(oFile,mySet)
