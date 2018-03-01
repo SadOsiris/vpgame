@@ -5,12 +5,17 @@ import json
 
 # Set the request parameters
 limit= 50
+page=1
+betlist=[]
+tid=100094194
 
 
 
-def getjson(page):
-    url="http://www.vpgame.com/gateway/v1/match/?category=dota&status=close&limit="+str(limit)+"&page="+str(page)
-    #http://www.vpgame.com/gateway/v1/match/schedule?tid=100122970
+def getjson(page=None,tid=None):
+    if page!=None:
+        url="http://www.vpgame.com/gateway/v1/match/?category=dota&status=close&limit="+str(limit)+"&page="+str(page)
+    else:
+        url="http://www.vpgame.com/gateway/v1/match/schedule?tid="+str(tid)
     # Fetch url
     print("Fetching url..")
 
@@ -28,27 +33,30 @@ def getjson(page):
     data = response.json()
     return data
 
-page=1
-betlist=[]
+def dumpJson(ofile,myList):
+    with open(ofile,'w') as outfile:
+        json.dump(myList,outfile)
 
-while True:
-    data=getjson(page)
-    if not data['body']:
-        print(page)
-        break
-    print("page=",page)
-    for i in range(0,len(data['body'])):
+def sanitizeJsonBody(myList,page):
+    while True:
+        data=getjson(page)
+        if not data['body']:
+            print(page)
+            break
+        for i in range(0,len(data['body'])):
+            betlist.append(data['body'][i])
+        page+=1
 
-        betlist.append(data['body'][i])
-    page+=1
+def main():
+    data=getjson(None,tid)
+    dumpJson("tid.txt",data)
 
+if __name__=="__main__":
+    main()
 #tournamentid
 #tid = data['body'][0]['tournament_schedule_id']
 #print('most recent tid:', tid)
 
-with open('vpgame.txt','w') as outfile:
-    json.dump(betlist,outfile)
+#dumpJson("gettid.txt",betlist)
 
 # code ends
-
-

@@ -22,7 +22,7 @@ mySet=Set([])
 #getList('left_team_name',mySet,'schedule')
 #getList('right_team_name',mySet,'schedule')
 str1='tournament_schedule_id'
-oFile=str1+'.txt'
+oFile=str1
 getList(mySet,str1)
 
 writeSetToFile(oFile,mySet)
