@@ -6,6 +6,8 @@ import json
 # Set the request parameters
 limit= 50
 
+
+
 def getjson(page):
     url="http://www.vpgame.com/gateway/v1/match/?category=dota&status=close&limit="+str(limit)+"&page="+str(page)
     #http://www.vpgame.com/gateway/v1/match/schedule?tid=100122970
