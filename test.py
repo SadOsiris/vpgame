@@ -1,5 +1,6 @@
 import requests
 import json
+import concurrent.futures
 
 
 
@@ -16,6 +17,25 @@ def getjson(page=None,tid=None):
         url="http://www.vpgame.com/gateway/v1/match/?category=dota&status=close&limit="+str(limit)+"&page="+str(page)
     else:
         url="http://www.vpgame.com/gateway/v1/match/schedule?tid="+str(tid)
+    # Fetch url
+    print("Fetching url..")
+
+    # Do the HTTP get request
+    response = requests.get(url) #http request
+
+    # Error handling
+
+    # Check for HTTP codes other than 200
+    if response.status_code != 200:
+        print('Status:', response.status_code, 'Problem with the request. Exiting.')
+        exit()
+
+    # Decode the JSON response into a dictionary and use the data
+    data = response.json()
+    return data
+
+
+def tester(url):
     # Fetch url
     print("Fetching url..")
 
@@ -62,10 +82,17 @@ def getTidJson(infile,myList=None):
 def main():
     #data=getjson(None,tid)
     #dumpJson("tid.txt",data)
-    getTidJson("tournament_schedule_id.txt",betlist)
-    dumpJson('tournament.json',betlist)
+    url="http://www.vpgame.com/gateway/v1/match/schedule?tid=100094194"
+
+    url = "http://www.vpgame.com/gateway/v1/match/schedule?tid=100094194"
+
+    urls = [url] * 100
+    with concurrent.futures.ThreadPoolExecutor(max_workers=100) as pool:
+        results = pool.map(tester, urls)
 
 
+for x in results:
+        print results
 
 if __name__=="__main__":
     main()
