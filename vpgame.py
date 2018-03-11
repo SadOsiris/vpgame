@@ -76,6 +76,19 @@ def concurrentpool():
     dumpJson("json_dict.txt", myDict)
 
 
+def enumerateItems(data,myset):
+    for i in data:
+        for j in range(0,len(data[i]['body'])):
+            for k in data[i]['body'][j]:
+                myset.add(k)
+
+def enumerateTeams(data,myset):
+    for i in data:
+        for j in range(0,len(data[i]['body'])):
+            myset.add(data[i]['body'][j]['left_team'])
+            myset.add(data[i]['body'][j]['right_team'])
+
+
 def main():
     # data=getjson(None,tid)
     # dumpJson("tid.txt",data)
@@ -85,7 +98,10 @@ def main():
 
     with open("json_dict.txt", "r") as f:
         data = json.load(f)
-    print(data['100094194']['body'][0])
+    bodyitemset=set()
+    enumerateTeams(data,bodyitemset)
+    print(bodyitemset)
+    print(len(bodyitemset))
 
 
 if __name__ == "__main__":
